@@ -1,0 +1,84 @@
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const { Pool } = require('pg');
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+// Thiết lập kết nối PostgreSQL
+const pool = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_DATABASE,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+});
+
+// API 1: Lấy danh sách Tỉnh/Thành phố
+app.get('/api/cities', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM cities');
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// API 2: Lấy danh sách Quận/Huyện theo Tỉnh
+app.get('/api/districts/:cityCode', async (req, res) => {
+  try {
+    const { cityCode } = req.params;
+    const result = await pool.query('SELECT * FROM districts WHERE parent_code = $1', [cityCode]);
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// API 3: Lấy danh sách bài viết (Có xử lý lọc từ Frontend gửi lên)
+app.get('/api/posts', async (req, res) => {
+  try {
+    const { city_code, district_code, min_price, max_price, min_area, max_area } = req.query;
+    
+    let query = 'SELECT * FROM posts WHERE 1=1';
+    let queryParams = [];
+    let paramIndex = 1;
+
+    if (city_code) {
+      query += ` AND city_code = $${paramIndex++}`;
+      queryParams.push(city_code);
+    }
+    if (district_code) {
+      query += ` AND district_code = $${paramIndex++}`;
+      queryParams.push(district_code);
+    }
+    if (min_price) {
+      query += ` AND price >= $${paramIndex++}`;
+      queryParams.push(min_price);
+    }
+    if (max_price) {
+      query += ` AND price <= $${paramIndex++}`;
+      queryParams.push(max_price);
+    }
+    if (min_area) {
+      query += ` AND area >= $${paramIndex++}`;
+      queryParams.push(min_area);
+    }
+    if (max_area) {
+      query += ` AND area <= $${paramIndex++}`;
+      queryParams.push(max_area);
+    }
+
+    const result = await pool.query(query, queryParams);
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server Backend đang chạy tại cổng ${PORT}`);
+});

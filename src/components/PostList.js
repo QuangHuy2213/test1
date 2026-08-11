@@ -1,60 +1,78 @@
-import React , { useState, useMemo } from 'react';
-import tinhtpData from '../data/tinh_tp.json';
-import quanhuyenData from '../data/quan_huyen.json';
-import baidangData from '../data/data.json';
+import React, { useState, useEffect } from 'react';
 
 const PostList = () => {
-    const [selectedCity, setSelectedCity] = useState('');
-    const [selectedDistrict, setSelectedDistrict] = useState('');
-    const [selectedPrice , setSelectedPrice] = useState('');
-    const [selectedArea , setSelectedArea] = useState('');
-    const [filteredPosts, setFilteredPosts] = useState(baidangData);
+  // 1. State lưu dữ liệu từ API
+  const [cities, setCities] = useState([]);
+  const [availableDistricts, setAvailableDistricts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
+  
+  // 2. State lưu lựa chọn của người dùng
+  const [selectedCity, setSelectedCity] = useState('');
+  const [selectedDistrict, setSelectedDistrict] = useState('');
+  const [selectedPrice, setSelectedPrice] = useState('');
+  const [selectedArea, setSelectedArea] = useState('');
 
-    // lay danh sach tp
-    const cities = Object.values(tinhtpData);
+  // 3. Lấy danh sách thành phố khi vừa load trang
+  useEffect(() => {
+    fetch('http://localhost:5000/api/cities')
+      .then(res => res.json())
+      .then(data => setCities(data))
+      .catch(err => console.error(err));
+  }, []);
 
-    // lay danh sach quan huyen theo tp
-    const availableDistricts = useMemo(() => {
-        if (!selectedCity) return [];
-        return Object.values(quanhuyenData).filter(
-            (district) => district.parent_code === selectedCity 
-        );
+  // 4. Gọi API lấy Quận/Huyện khi Tỉnh/Thành phố thay đổi
+  useEffect(() => {
+    if (selectedCity) {
+      fetch(`http://localhost:5000/api/districts/${selectedCity}`)
+        .then(res => res.json())
+        .then(data => setAvailableDistricts(data))
+        .catch(err => console.error(err));
+    } else {
+      setAvailableDistricts([]);
+    }
+  }, [selectedCity]);
 
-    }, [selectedCity]);
+  // 5. MỚI THÊM: Gọi API lấy TẤT CẢ bài viết ngay khi vừa load trang
+  useEffect(() => {
+    fetch('http://localhost:5000/api/posts')
+      .then(res => res.json())
+      .then(data => setFilteredPosts(data))
+      .catch(err => console.error(err));
+  }, []);
 
-    // xu li su kien khi thay doi tp
-    const handleCityChange = (e) => {
-        setSelectedCity(e.target.value);
-        setSelectedDistrict(''); // lam moi lua chon quan khi thay doi tp
-    };
+  const handleCityChange = (e) => {
+    setSelectedCity(e.target.value);
+    setSelectedDistrict(''); 
+  };
 
-    // ham loc tin
-    const handleFilter = () => {
-        let results = baidangData;
+  // 6. Hàm gọi API lọc tin (chạy khi bấm nút)
+  const handleFilter = () => {
+    let url = new URL('http://localhost:5000/api/posts');
+    
+    if (selectedCity) url.searchParams.append('city_code', selectedCity);
+    if (selectedDistrict) url.searchParams.append('district_code', selectedDistrict);
+    
+    if (selectedPrice) {
+      const [min, max] = selectedPrice.split('-');
+      url.searchParams.append('min_price', min);
+      if (max) url.searchParams.append('max_price', max);
+    }
 
-        if (selectedCity) {
-            results = results.filter((post) => post.city === selectedCity);
-        }
+    if (selectedArea) {
+      const [min, max] = selectedArea.split('-');
+      url.searchParams.append('min_area', min);
+      if (max) url.searchParams.append('max_area', max);
+    }
 
-        if (selectedDistrict) {
-            results = results.filter((post) => post.district === selectedDistrict);
-        }
+    fetch(url)
+      .then(res => res.json())
+      .then(data => setFilteredPosts(data))
+      .catch(err => console.error(err));
+  };
 
-        if (selectedPrice) {
-            const [min , max] = selectedPrice.split('-').map(Number);
-            results = results.filter((post) => max ? (post.price >= min && post.price <= max) : (post.price >= min));
-        }
-
-        if (selectedArea) {
-            const [min , max] = selectedArea.split('-').map(Number);
-            results = results.filter((post) => max ? (post.area >= min && post.area <= max) : (post.area >= min));
-        }
-
-        setFilteredPosts(results);
-    };
-    return (
+  return (
     <div className="post-list-container">
-      {/* loc tim kiem */}
+      {/* Bộ lọc tìm kiếm */}
       <div className="search-bar">
         <div className="form-group">
           <label>Tỉnh thành</label>
@@ -83,7 +101,7 @@ const PostList = () => {
             <option value="0-1000000">Dưới 1 triệu</option>
             <option value="1000000-3000000">1 triệu - 3 triệu</option>
             <option value="3000000-5000000">3 triệu - 5 triệu</option>
-            <option value="5000000-999999999">Trên 5 triệu</option>
+            <option value="5000000-">Trên 5 triệu</option>
           </select>
         </div>
 
@@ -94,19 +112,19 @@ const PostList = () => {
             <option value="0-20">Dưới 20 m²</option>
             <option value="20-30">20 m² - 30 m²</option>
             <option value="30-50">30 m² - 50 m²</option>
-            <option value="50-999">Trên 50 m²</option>
+            <option value="50-">Trên 50 m²</option>
           </select>
         </div>
 
         <button className="btn-filter" onClick={handleFilter}>Lọc tin</button>
       </div>
 
-      {/* danh sach bai viet*/}
+      {/* Danh sách bài viết */}
       <div className="post-list">
         {filteredPosts.length > 0 ? (
           filteredPosts.map((post, index) => {
-            const cityName = tinhtpData[post.city]?.name_with_type || '';
-            const districtName = quanhuyenData[post.district]?.name_with_type || '';
+            const cityObj = cities.find(c => c.code === post.city);
+            const cityName = cityObj ? cityObj.name_with_type : `Mã tỉnh ${post.city}`;
 
             return (
               <div className="post-item" key={index}>
@@ -116,7 +134,7 @@ const PostList = () => {
                   <div className="post-price">{post.price} triệu/tháng</div>
                   <div className="post-meta">
                     <strong>Diện tích:</strong> {post.area}m² &nbsp;&nbsp;&nbsp; 
-                    <strong>Khu vực:</strong> {districtName}, {cityName}
+                    <strong>Khu vực:</strong> Mã quận {post.district}, {cityName}
                   </div>
                   <p className="post-content">{post.content}</p>
                 </div>
@@ -124,7 +142,7 @@ const PostList = () => {
             );
           })
         ) : (
-          <p style={{ padding: '20px', textAlign: 'center' }}>Không tìm thấy bài viết nào phù hợp với bộ lọc.</p>
+          <p style={{ padding: '20px', textAlign: 'center' }}>Không tìm thấy bài viết nào.</p>
         )}
       </div>
     </div>

@@ -1,23 +1,22 @@
-import logo from './logo.svg';
+import React from 'react';
+import PostList from './components/PostList';
+import CandlestickChart from './components/CandlestickChart';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app-container">
+      <h2 className="main-title">ĐỀ TEST FRONT-END DEVELOPER</h2>
+      
+      <div className="task-section">
+        <h3 className="task-title">Bài 1: Danh sách bài viết & Tìm kiếm </h3>
+        <PostList />
+      </div>
+
+      <div className="task-section">
+        <h3 className="task-title">Bài 2: Biểu đồ nến - Candlestick Chart</h3>
+        <CandlestickChart />
+      </div>
     </div>
   );
 }

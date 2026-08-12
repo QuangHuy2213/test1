@@ -65,7 +65,7 @@ const PostList = () => {
     setSelectedDistrict(''); 
   };
 
-  // 6. Hàm gọi API lọc tin (ĐÃ SỬA: Đổi city_code thành city cho khớp với Database)
+  // 6. Hàm gọi API lọc tin
   const handleFilter = () => {
     let url = new URL('https://nguyenducquanghuy-backend.onrender.com/api/posts');
     
@@ -85,6 +85,21 @@ const PostList = () => {
     }
 
     fetch(url)
+      .then(res => res.json())
+      .then(data => setFilteredPosts(data))
+      .catch(err => console.error(err));
+  };
+
+  // 7. MỚI THÊM: Hàm làm mới bộ lọc
+  const handleReset = () => {
+    // Xóa trắng các lựa chọn
+    setSelectedCity('');
+    setSelectedDistrict('');
+    setSelectedPrice('');
+    setSelectedArea('');
+
+    // Gọi lại API lấy toàn bộ bài viết ban đầu
+    fetch('https://nguyenducquanghuy-backend.onrender.com/api/posts')
       .then(res => res.json())
       .then(data => setFilteredPosts(data))
       .catch(err => console.error(err));
@@ -136,7 +151,25 @@ const PostList = () => {
           </select>
         </div>
 
-        <button className="btn-filter" onClick={handleFilter}>Lọc tin</button>
+        {/* MỚI THÊM: Nhóm nút Lọc tin và Làm mới */}
+        <div className="form-group" style={{ display: 'flex', gap: '10px', alignItems: 'flex-end' }}>
+          <button className="btn-filter" onClick={handleFilter}>Lọc tin</button>
+          <button 
+            className="btn-reset" 
+            onClick={handleReset}
+            style={{
+              padding: '10px 15px',
+              backgroundColor: '#ccc',
+              color: '#333',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontWeight: 'bold'
+            }}
+          >
+            Làm mới
+          </button>
+        </div>
       </div>
 
       {/* Danh sách bài viết */}
@@ -151,11 +184,11 @@ const PostList = () => {
                 <img src={post.thumbnail} alt={post.title} className="post-thumbnail" />
                 <div className="post-info">
                   <h3 className="post-title">{post.title}</h3>
-                  {/* ĐÃ SỬA: Giá tiền chia cho 1 triệu */}
+                  {/* Giá tiền chia cho 1 triệu */}
                   <div className="post-price">{post.price / 1000000} triệu/tháng</div>
                   <div className="post-meta">
                     <strong>Diện tích:</strong> {post.area}m² &nbsp;&nbsp;&nbsp; 
-                    {/* ĐÃ SỬA: Dùng component DistrictLabel để dịch mã ra Tên Quận */}
+                    {/* Dịch mã ra tên quận/huyện */}
                     <strong>Khu vực:</strong> <DistrictLabel cityCode={post.city} districtCode={post.district} />, {cityName}
                   </div>
                   <p className="post-content">{post.content}</p>

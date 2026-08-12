@@ -8,12 +8,9 @@
   "servers": [
     {
       "url": "https://nguyenducquanghuy-backend.onrender.com",
-      "description": "Server Render (Production)"
-    },
-    {
-      "url": "http://localhost:5000",
-      "description": "Server Local"
+      "description": "Server Render"
     }
+    
   ],
   "paths": {
     "/api/cities": {

@@ -1,5 +1,25 @@
 import React, { useState, useEffect } from 'react';
 
+// Tra cứu tên quận từ mã quận và mã tỉnh
+const DistrictLabel = ({ cityCode, districtCode }) => {
+  const [districtName, setDistrictName] = useState(`Mã ${districtCode}`);
+
+  useEffect(() => {
+    if (!cityCode) return;
+    fetch(`https://nguyenducquanghuy-backend.onrender.com/api/districts/${cityCode}`)
+      .then(res => res.json())
+      .then(data => {
+        // Tìm quận có mã tương ứng trong danh sách
+        const found = data.find(d => String(d.code) === String(districtCode));
+        if (found) setDistrictName(found.name_with_type);
+      })
+      .catch(err => console.error(err));
+  }, [cityCode, districtCode]);
+
+  return <span>{districtName}</span>;
+};
+
+
 const PostList = () => {
   // 1. State lưu dữ liệu từ API
   const [cities, setCities] = useState([]);
@@ -32,7 +52,7 @@ const PostList = () => {
     }
   }, [selectedCity]);
 
-  // 5. MỚI THÊM: Gọi API lấy TẤT CẢ bài viết ngay khi vừa load trang
+  // 5. Gọi API lấy TẤT CẢ bài viết ngay khi vừa load trang
   useEffect(() => {
     fetch('https://nguyenducquanghuy-backend.onrender.com/api/posts')
       .then(res => res.json())
@@ -45,7 +65,7 @@ const PostList = () => {
     setSelectedDistrict(''); 
   };
 
-  // 6. Hàm gọi API lọc tin (chạy khi bấm nút)
+  // 6. Hàm gọi API lọc tin (ĐÃ SỬA: Đổi city_code thành city cho khớp với Database)
   const handleFilter = () => {
     let url = new URL('https://nguyenducquanghuy-backend.onrender.com/api/posts');
     
@@ -131,10 +151,12 @@ const PostList = () => {
                 <img src={post.thumbnail} alt={post.title} className="post-thumbnail" />
                 <div className="post-info">
                   <h3 className="post-title">{post.title}</h3>
-                  <div className="post-price">{post.price} triệu/tháng</div>
+                  {/* ĐÃ SỬA: Giá tiền chia cho 1 triệu */}
+                  <div className="post-price">{post.price / 1000000} triệu/tháng</div>
                   <div className="post-meta">
                     <strong>Diện tích:</strong> {post.area}m² &nbsp;&nbsp;&nbsp; 
-                    <strong>Khu vực:</strong> Mã quận {post.district}, {cityName}
+                    {/* ĐÃ SỬA: Dùng component DistrictLabel để dịch mã ra Tên Quận */}
+                    <strong>Khu vực:</strong> <DistrictLabel cityCode={post.city} districtCode={post.district} />, {cityName}
                   </div>
                   <p className="post-content">{post.content}</p>
                 </div>

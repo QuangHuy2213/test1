@@ -49,8 +49,8 @@ const PostList = () => {
   const handleFilter = () => {
     let url = new URL('https://nguyenducquanghuy-backend.onrender.com/api/posts');
     
-    if (selectedCity) url.searchParams.append('city_code', selectedCity);
-    if (selectedDistrict) url.searchParams.append('district_code', selectedDistrict);
+    if (selectedCity) url.searchParams.append('city', selectedCity);
+    if (selectedDistrict) url.searchParams.append('district', selectedDistrict);
     
     if (selectedPrice) {
       const [min, max] = selectedPrice.split('-');

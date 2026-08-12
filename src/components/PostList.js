@@ -155,16 +155,13 @@ const PostList = () => {
         <div className="form-group" style={{ display: 'flex', gap: '10px', alignItems: 'flex-end' }}>
           <button className="btn-filter" onClick={handleFilter}>Lọc tin</button>
           <button 
-            className="btn-reset" 
+            className="btn-filter" 
             onClick={handleReset}
-            style={{
-              padding: '10px 15px',
-              backgroundColor: '#ccc',
-              color: '#333',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              fontWeight: 'bold'
+            style={{ 
+              flex: 1, 
+              backgroundColor: '#95a5a6',
+              borderColor: '#95a5a6',
+              color: '#fff'
             }}
           >
             Làm mới

@@ -8,29 +8,18 @@
   "servers": [
     {
       "url": "https://nguyenducquanghuy-backend.onrender.com",
-      "description": "Server Render (Production)"
+      "description": "Server Render"
     }
+    
   ],
   "paths": {
     "/api/cities": {
       "get": {
         "summary": "Lấy danh sách tất cả Tỉnh/Thành phố",
-        "tags": [
-          "Khu vực"
-        ],
+        "tags": ["Khu vực"],
         "responses": {
           "200": {
-            "description": "Trả về mảng chứa danh sách tỉnh thành",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
-                }
-              }
-            }
+            "description": "Trả về mảng chứa danh sách tỉnh thành"
           }
         }
       }
@@ -38,9 +27,7 @@
     "/api/districts/{cityCode}": {
       "get": {
         "summary": "Lấy danh sách Quận/Huyện theo Mã Tỉnh",
-        "tags": [
-          "Khu vực"
-        ],
+        "tags": ["Khu vực"],
         "parameters": [
           {
             "in": "path",
@@ -54,17 +41,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Trả về mảng chứa danh sách quận huyện",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
-                }
-              }
-            }
+            "description": "Trả về mảng chứa danh sách quận huyện"
           }
         }
       }
@@ -72,72 +49,48 @@
     "/api/posts": {
       "get": {
         "summary": "Lấy danh sách bài viết (Có hỗ trợ bộ lọc)",
-        "tags": [
-          "Bài viết"
-        ],
+        "tags": ["Bài viết"],
         "parameters": [
           {
             "in": "query",
             "name": "city",
-            "schema": {
-              "type": "string"
-            },
+            "schema": { "type": "string" },
             "description": "Mã tỉnh/thành phố (Ví dụ 79)"
           },
           {
             "in": "query",
             "name": "district",
-            "schema": {
-              "type": "string"
-            },
+            "schema": { "type": "string" },
             "description": "Mã quận/huyện"
           },
           {
             "in": "query",
             "name": "min_price",
-            "schema": {
-              "type": "integer"
-            },
+            "schema": { "type": "integer" },
             "description": "Giá thấp nhất (VND)"
           },
           {
             "in": "query",
             "name": "max_price",
-            "schema": {
-              "type": "integer"
-            },
+            "schema": { "type": "integer" },
             "description": "Giá cao nhất (VND)"
           },
           {
             "in": "query",
             "name": "min_area",
-            "schema": {
-              "type": "integer"
-            },
+            "schema": { "type": "integer" },
             "description": "Diện tích nhỏ nhất (m2)"
           },
           {
             "in": "query",
             "name": "max_area",
-            "schema": {
-              "type": "integer"
-            },
+            "schema": { "type": "integer" },
             "description": "Diện tích lớn nhất (m2)"
           }
         ],
         "responses": {
           "200": {
-            "description": "Trả về mảng bài viết khớp với bộ lọc",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
-                }
-              }
-            }
+            "description": "Trả về mảng bài viết khớp với bộ lọc"
           }
         }
       }

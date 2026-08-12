@@ -1,0 +1,102 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Tài liệu API Dự án",
+    "version": "1.0.0",
+    "description": "Giao diện test API Backend bằng Swagger"
+  },
+  "servers": [
+    {
+      "url": "https://nguyenducquanghuy-backend.onrender.com",
+      "description": "Server Render (Production)"
+    },
+    {
+      "url": "http://localhost:5000",
+      "description": "Server Local"
+    }
+  ],
+  "paths": {
+    "/api/cities": {
+      "get": {
+        "summary": "Lấy danh sách tất cả Tỉnh/Thành phố",
+        "tags": ["Khu vực"],
+        "responses": {
+          "200": {
+            "description": "Trả về mảng chứa danh sách tỉnh thành"
+          }
+        }
+      }
+    },
+    "/api/districts/{cityCode}": {
+      "get": {
+        "summary": "Lấy danh sách Quận/Huyện theo Mã Tỉnh",
+        "tags": ["Khu vực"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cityCode",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Mã của tỉnh/thành phố (Ví dụ 79 là TP.HCM, 01 là Hà Nội)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Trả về mảng chứa danh sách quận huyện"
+          }
+        }
+      }
+    },
+    "/api/posts": {
+      "get": {
+        "summary": "Lấy danh sách bài viết (Có hỗ trợ bộ lọc)",
+        "tags": ["Bài viết"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "city",
+            "schema": { "type": "string" },
+            "description": "Mã tỉnh/thành phố (Ví dụ 79)"
+          },
+          {
+            "in": "query",
+            "name": "district",
+            "schema": { "type": "string" },
+            "description": "Mã quận/huyện"
+          },
+          {
+            "in": "query",
+            "name": "min_price",
+            "schema": { "type": "integer" },
+            "description": "Giá thấp nhất (VND)"
+          },
+          {
+            "in": "query",
+            "name": "max_price",
+            "schema": { "type": "integer" },
+            "description": "Giá cao nhất (VND)"
+          },
+          {
+            "in": "query",
+            "name": "min_area",
+            "schema": { "type": "integer" },
+            "description": "Diện tích nhỏ nhất (m2)"
+          },
+          {
+            "in": "query",
+            "name": "max_area",
+            "schema": { "type": "integer" },
+            "description": "Diện tích lớn nhất (m2)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Trả về mảng bài viết khớp với bộ lọc"
+          }
+        }
+      }
+    }
+  }
+}

@@ -14,7 +14,7 @@ const PostList = () => {
 
   // 3. Lấy danh sách thành phố khi vừa load trang
   useEffect(() => {
-    fetch('http://localhost:5000/api/cities')
+    fetch('https://nguyenducquanghuy-backend.onrender.com/api/cities')
       .then(res => res.json())
       .then(data => setCities(data))
       .catch(err => console.error(err));
@@ -23,7 +23,7 @@ const PostList = () => {
   // 4. Gọi API lấy Quận/Huyện khi Tỉnh/Thành phố thay đổi
   useEffect(() => {
     if (selectedCity) {
-      fetch(`http://localhost:5000/api/districts/${selectedCity}`)
+      fetch(`https://nguyenducquanghuy-backend.onrender.com/api/districts/${selectedCity}`)
         .then(res => res.json())
         .then(data => setAvailableDistricts(data))
         .catch(err => console.error(err));
@@ -34,7 +34,7 @@ const PostList = () => {
 
   // 5. MỚI THÊM: Gọi API lấy TẤT CẢ bài viết ngay khi vừa load trang
   useEffect(() => {
-    fetch('http://localhost:5000/api/posts')
+    fetch('https://nguyenducquanghuy-backend.onrender.com/api/posts')
       .then(res => res.json())
       .then(data => setFilteredPosts(data))
       .catch(err => console.error(err));
@@ -47,7 +47,7 @@ const PostList = () => {
 
   // 6. Hàm gọi API lọc tin (chạy khi bấm nút)
   const handleFilter = () => {
-    let url = new URL('http://localhost:5000/api/posts');
+    let url = new URL('https://nguyenducquanghuy-backend.onrender.com/api/posts');
     
     if (selectedCity) url.searchParams.append('city_code', selectedCity);
     if (selectedDistrict) url.searchParams.append('district_code', selectedDistrict);

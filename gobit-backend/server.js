@@ -40,19 +40,19 @@ app.get('/api/districts/:cityCode', async (req, res) => {
 // API 3: Lấy danh sách bài viết (Có xử lý lọc từ Frontend gửi lên)
 app.get('/api/posts', async (req, res) => {
   try {
-    const { city_code, district_code, min_price, max_price, min_area, max_area } = req.query;
+    const { city, district, min_price, max_price, min_area, max_area } = req.query;
     
     let query = 'SELECT * FROM posts WHERE 1=1';
     let queryParams = [];
     let paramIndex = 1;
 
-    if (city_code) {
-      query += ` AND city_code = $${paramIndex++}`;
-      queryParams.push(city_code);
+    if (city) {
+      query += ` AND city = $${paramIndex++}`;
+      queryParams.push(city);
     }
-    if (district_code) {
-      query += ` AND district_code = $${paramIndex++}`;
-      queryParams.push(district_code);
+    if (district) {
+      query += ` AND district = $${paramIndex++}`;
+      queryParams.push(district);
     }
     if (min_price) {
       query += ` AND price >= $${paramIndex++}`;

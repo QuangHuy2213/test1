@@ -19,6 +19,7 @@ const DistrictLabel = ({ cityCode, districtCode }) => {
   return <span>{districtName}</span>;
 };
 
+
 const PostList = () => {
   // 1. State lưu dữ liệu từ API
   const [cities, setCities] = useState([]);
@@ -89,7 +90,7 @@ const PostList = () => {
       .catch(err => console.error(err));
   };
 
-  // 7. Hàm làm mới bộ lọc
+  // 7. MỚI THÊM: Hàm làm mới bộ lọc
   const handleReset = () => {
     // Xóa trắng các lựa chọn
     setSelectedCity('');
@@ -150,24 +151,20 @@ const PostList = () => {
           </select>
         </div>
 
-        {/* Nhóm nút Lọc tin và Làm mới */}
-        <div className="form-group" style={{ display: 'flex', gap: '8px', alignItems: 'flex-end' }}>
+        {/* MỚI THÊM: Nhóm nút Lọc tin và Làm mới */}
+        <div className="form-group" style={{ display: 'flex', gap: '10px', alignItems: 'flex-end' }}>
+          <button className="btn-filter" onClick={handleFilter}>Lọc tin</button>
           <button 
-            className="btn-filter" 
-            onClick={handleFilter}
-            style={{ flex: 1 }}
-          >
-            Lọc tin
-          </button>
-          
-          <button 
-            className="btn-filter" 
+            className="btn-reset" 
             onClick={handleReset}
-            style={{ 
-              flex: 1, 
-              backgroundColor: '#95a5a6',
-              borderColor: '#95a5a6',
-              color: '#fff'
+            style={{
+              padding: '10px 15px',
+              backgroundColor: '#ccc',
+              color: '#333',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontWeight: 'bold'
             }}
           >
             Làm mới

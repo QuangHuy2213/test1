@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import './PostList.css'; // Import CSS cho component PostList                                       
+
 // 1. KHAI BÁO CÁC INTERFACE (BẢN THIẾT KẾ DỮ LIỆU)
 interface City {
   code: string;
@@ -234,13 +235,13 @@ const PostList: React.FC = () => {
           </select>
         </div>
 
-        <div className="form-group" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-          <button className="btn-filter" onClick={handleFilter}>Lọc tin</button>
+        <div className="form-group" style={{ display: 'flex', flexDirection: 'row', gap: '8px', alignItems: 'flex-end', flexWrap: 'nowrap' }}>
+          <button className="btn-filter" onClick={handleFilter} style={{ whiteSpace: 'nowrap' }}>Lọc tin</button>
           <button 
-              className="btn-reset" 
-              onClick={handleReset}
+            className="btn-reset" 
+            onClick={handleReset}
             style={{
-              padding: '10px 15px',
+              padding: '10px 12px',
               backgroundColor: '#ccc',
               color: '#333',
               border: 'none',
@@ -250,7 +251,7 @@ const PostList: React.FC = () => {
               whiteSpace: 'nowrap'
             }}
           >
-          Làm mới
+            Làm mới
           </button>
         </div>
       </div>

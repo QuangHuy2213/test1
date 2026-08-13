@@ -1,0 +1,5 @@
+(globalThis["TURBOPACK_CHUNK_LISTS"] || (globalThis["TURBOPACK_CHUNK_LISTS"] = [])).push({
+    script: typeof document === "object" ? document.currentScript : undefined,
+    chunks: ["static/chunks/node_modules_next_dist_20wefz_._.js","static/chunks/node_modules_apexcharts_dist_apexcharts_esm_1-tx1gc.js","static/chunks/node_modules_1b55mog._.js","static/chunks/src_components_0q3n0b3._.js","static/chunks/src_components_PostList_0wpt0kv.css"],
+    source: "entry"
+});

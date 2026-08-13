@@ -1,0 +1,146 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background-color: #fff;
+}
+
+.app-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.main-title {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.task-section {
+  margin-bottom: 50px;
+}
+
+.task-title {
+  margin-bottom: 20px;
+  color: #1a1a1a;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+/* BÀI 1: SEARCH BAR & POST LIST */
+.post-list-container {
+  width: 100%;
+}
+
+.search-bar {
+  display: flex;
+  background-color: #f3ca8c;
+  padding: 15px 20px;
+  align-items: flex-end;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.form-group select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  width: 180px;
+  outline: none;
+  background: #fff;
+}
+
+.btn-filter {
+  background-color: #ff9900;
+  color: white;
+  border: none;
+  padding: 0 25px;
+  cursor: pointer;
+  height: 35px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.btn-filter:hover {
+  background-color: #e68a00;
+}
+
+/* Post List */
+.post-list {
+  background-color: #fdf3e7;
+  border: 1px solid #e2a77a;
+}
+
+.post-item {
+  display: flex;
+  padding: 15px;
+  border-bottom: 1px solid #e2a77a;
+  gap: 15px;
+}
+
+.post-item:last-child {
+  border-bottom: none;
+}
+
+.post-thumbnail {
+  width: 180px;
+  height: 120px;
+  object-fit: cover;
+}
+
+.post-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.post-title {
+  color: #d11e22;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.post-price {
+  color: #00a651;
+  font-weight: bold;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.post-meta {
+  font-size: 13px;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.post-content {
+  font-size: 13px;
+  color: #333;
+  line-height: 1.5;
+}
+
+/* BÀI 2: CHART CONTAINER */
+.chart-container {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  padding: 20px;
+  border-radius: 4px;
+}

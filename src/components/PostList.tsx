@@ -235,25 +235,29 @@ const PostList: React.FC = () => {
           </select>
         </div>
 
-        <div className="form-group" style={{ display: 'flex', flexDirection: 'row', gap: '8px', alignItems: 'flex-end', flexWrap: 'nowrap' }}>
-          <button className="btn-filter" onClick={handleFilter} style={{ whiteSpace: 'nowrap' }}>Lọc tin</button>
-          <button 
-            className="btn-reset" 
-            onClick={handleReset}
-            style={{
-              padding: '10px 12px',
-              backgroundColor: '#ccc',
-              color: '#333',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-              whiteSpace: 'nowrap'
-            }}
-          >
-            Làm mới
-          </button>
+        {/* Khung tìm kiếm giờ chỉ còn nút Lọc tin */}
+        <div className="form-group" style={{ display: 'flex', alignItems: 'flex-end' }}>
+          <button className="btn-filter" onClick={handleFilter}>Lọc tin</button>
         </div>
+      </div>
+
+      {/* Nút Làm mới được chuyển ra ngoài, nằm ở góc phải phía trên danh sách bài viết */}
+      <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '15px 0 10px 0' }}>
+        <button 
+          className="btn-reset" 
+          onClick={handleReset}
+          style={{
+            padding: '8px 16px',
+            backgroundColor: '#ccc',
+            color: '#333',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontWeight: 'bold',
+          }}
+        >
+          Làm mới
+        </button>
       </div>
 
       {/* Danh sách bài viết */}

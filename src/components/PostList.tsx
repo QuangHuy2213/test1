@@ -234,11 +234,11 @@ const PostList: React.FC = () => {
           </select>
         </div>
 
-        <div className="form-group" style={{ display: 'flex', gap: '10px', alignItems: 'flex-end' }}>
+        <div className="form-group" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
           <button className="btn-filter" onClick={handleFilter}>Lọc tin</button>
           <button 
-            className="btn-reset" 
-            onClick={handleReset}
+              className="btn-reset" 
+              onClick={handleReset}
             style={{
               padding: '10px 15px',
               backgroundColor: '#ccc',
@@ -246,10 +246,11 @@ const PostList: React.FC = () => {
               border: 'none',
               borderRadius: '4px',
               cursor: 'pointer',
-              fontWeight: 'bold'
+              fontWeight: 'bold',
+              whiteSpace: 'nowrap'
             }}
           >
-            Làm mới
+          Làm mới
           </button>
         </div>
       </div>
